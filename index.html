@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Metal Reels · Boosted Starters + Smooth Collection</title>
+    <title>Metal Reels · Newbie-Friendly Edition</title>
     <style>
         :root {
             --bg: #f9f4ef;
@@ -17,14 +17,11 @@
             --collect-bg: #f5f0ea;
             --shop-bg: #f0efe8;
             --scrap-color: #8a6d3b;
+            --debug-bg: rgba(255, 248, 240, 0.95);
+            --debug-border: #c0b0a0;
+            --tutorial-bg: rgba(255, 250, 245, 0.97);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(160deg, #fdf6f0 0%, #f6edf4 30%, #edf4f8 60%, #f9f4ef 100%);
             background-attachment: fixed;
@@ -36,303 +33,213 @@
             padding: 16px;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            -webkit-user-select: none;
         }
-
         .game-container {
             background: var(--surface);
             border-radius: 28px;
             padding: 24px 20px 20px;
-            max-width: 480px;
+            max-width: 500px;
             width: 100%;
-            box-shadow: 0 6px 28px rgba(120, 100, 140, 0.14);
+            box-shadow: 0 6px 28px rgba(120,100,140,0.14);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            transition: box-shadow 0.4s;
-        }
-        .game-container.jackpot-glow {
-            box-shadow: 0 0 60px rgba(220, 180, 120, 0.55), 0 0 120px rgba(200, 160, 200, 0.35), 0 6px 28px rgba(120,100,140,0.14);
-        }
-
-        .header h1 {
-            font-size: 1.6rem;
-            color: var(--text);
-            font-weight: 700;
-        }
-        .subtitle {
-            font-size: 0.65rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .resource-bar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-        }
-        .resource-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: var(--collect-bg);
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .multiplier-badge {
-            background: #fdf0d5;
-            color: #8a6d3b;
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            opacity: 0;
-            transform: translateY(6px);
-            transition: all 0.35s;
-        }
-        .multiplier-badge.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .grid-wrapper {
-            background: #fdfaf6;
-            border-radius: 20px;
-            padding: 8px;
-            border: 2px solid var(--cell-border);
-            transition: border-color 0.5s;
-        }
-        .grid-wrapper.win-border {
-            border-color: #e8c878;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 8px;
-            width: 100%;
-            aspect-ratio: 1/1;
-            max-width: 280px;
-        }
-
-        .cell {
-            background: var(--cell-bg);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: box-shadow 0.25s, transform 0.2s;
-            aspect-ratio: 1/1;
-            min-width: 52px;
             position: relative;
         }
+        .header h1 { font-size: 1.6rem; color: var(--text); font-weight: 700; }
+        .subtitle { font-size: 0.65rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; }
+        .resource-bar {
+            display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; width: 100%;
+        }
+        .resource-item {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--collect-bg); border-radius: 20px; padding: 5px 12px;
+            font-size: 0.75rem; font-weight: 600; color: var(--text);
+        }
+        .multiplier-badge {
+            background: #fdf0d5; color: #8a6d3b; border-radius: 20px; padding: 2px 10px;
+            font-weight: 700; font-size: 0.75rem; opacity: 0; transform: translateY(6px); transition: all 0.35s;
+        }
+        .multiplier-badge.active { opacity: 1; transform: translateY(0); }
+        .grid-wrapper {
+            background: #fdfaf6; border-radius: 20px; padding: 8px;
+            border: 2px solid var(--cell-border); transition: border-color 0.5s;
+        }
+        .grid-wrapper.win-border { border-color: #e8c878; }
+        .grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
+            gap: 8px; width: 100%; aspect-ratio: 1/1; max-width: 280px;
+        }
+        .cell {
+            background: var(--cell-bg); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: box-shadow 0.25s, transform 0.2s;
+            aspect-ratio: 1/1; min-width: 52px; position: relative;
+        }
         .cell.winning {
-            box-shadow: 0 0 18px rgba(230,180,80,0.7), 0 0 40px rgba(240,200,100,0.35);
+            box-shadow: 0 0 18px rgba(230,180,80,0.7),0 0 40px rgba(240,200,100,0.35);
             animation: winCellGlow 0.7s ease-in-out 3;
         }
         @keyframes winCellGlow {
-            0%,100%{ box-shadow: 0 0 18px rgba(230,180,80,0.7), 0 0 40px rgba(240,200,100,0.35); }
-            50%{ box-shadow: 0 0 30px rgba(240,200,90,1), 0 0 60px rgba(250,220,130,0.6); }
+            0%,100%{box-shadow:0 0 18px rgba(230,180,80,0.7),0 0 40px rgba(240,200,100,0.35)}
+            50%{box-shadow:0 0 30px rgba(240,200,90,1),0 0 60px rgba(250,220,130,0.6)}
         }
-        .cell.landing {
-            animation: landBounce 0.35s ease-out;
-        }
+        .cell.landing { animation: landBounce 0.35s ease-out; }
         @keyframes landBounce {
-            0%{ transform: scale(0.88); }
-            40%{ transform: scale(1.06); }
-            100%{ transform: scale(1); }
+            0%{transform:scale(0.88)} 40%{transform:scale(1.06)} 100%{transform:scale(1)}
         }
-        .cell.spinning {
-            animation: subtleShake 0.08s infinite alternate;
-        }
+        .cell.spinning { animation: subtleShake 0.08s infinite alternate; }
         @keyframes subtleShake {
-            0%{ transform: translate(0,0); }
-            100%{ transform: translate(1px,-1px); }
+            0%{transform:translate(0,0)} 100%{transform:translate(1px,-1px)}
         }
-
-        .shape-inner {
-            width: 48%;
-            height: 48%;
-            transition: background-color 0.06s, clip-path 0.06s;
+        .cell.rare-flash {
+            box-shadow: 0 0 18px rgba(230, 150, 200, 0.9);
+            transition: box-shadow 0.1s;
         }
+        .cell.almost-hint {
+            box-shadow: 0 0 14px rgba(150, 200, 220, 0.9);
+            animation: hintPulse 1s ease-in-out 3;
+        }
+        @keyframes hintPulse {
+            0%,100%{box-shadow:0 0 14px rgba(150,200,220,0.9)}
+            50%{box-shadow:0 0 24px rgba(150,200,220,1)}
+        }
+        .shape-inner { width: 48%; height: 48%; transition: background-color 0.06s; }
         .shape-circle { border-radius: 50%; }
-        .shape-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
-        .shape-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-        .shape-star { clip-path: polygon(50% 5%, 61% 33%, 93% 36%, 67% 55%, 78% 90%, 50% 68%, 22% 90%, 33% 55%, 7% 36%, 39% 33%); }
-        .shape-triangle { clip-path: polygon(50% 5%, 95% 90%, 5% 90%); }
-        .shape-octagon { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
-        .shape-pentagon { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
-        .shape-cross { clip-path: polygon(35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%); }
-        .shape-rhombus { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); transform: rotate(45deg); }
+        .shape-hexagon { clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+        .shape-diamond { clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+        .shape-star { clip-path: polygon(50% 5%,61% 33%,93% 36%,67% 55%,78% 90%,50% 68%,22% 90%,33% 55%,7% 36%,39% 33%); }
+        .shape-triangle { clip-path: polygon(50% 5%,95% 90%,5% 90%); }
+        .shape-octagon { clip-path: polygon(30% 0%,70% 0%,100% 30%,100% 70%,70% 100%,30% 100%,0% 70%,0% 30%); }
+        .shape-pentagon { clip-path: polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%); }
+        .shape-cross { clip-path: polygon(35% 0%,65% 0%,65% 35%,100% 35%,100% 65%,65% 65%,65% 100%,35% 100%,35% 65%,0% 65%,0% 35%,35% 35%); }
+        .shape-rhombus { clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%); transform: rotate(45deg); }
         .shape-ellipse { border-radius: 50% / 40%; }
-
         .btn {
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            outline: none;
-            box-shadow: 0 3px 10px rgba(150,120,140,0.18);
-            padding: 10px 18px;
-            font-size: 0.8rem;
+            border: none; border-radius: 50px; font-weight: 700; letter-spacing: 0.06em;
+            cursor: pointer; transition: all 0.2s; text-transform: uppercase; outline: none;
+            box-shadow: 0 3px 10px rgba(150,120,140,0.18); padding: 10px 18px; font-size: 0.8rem;
         }
-        .btn-spin {
-            background: var(--btn-bg);
-            color: var(--btn-text);
-            padding: 14px 44px;
-            font-size: 1.05rem;
-        }
-        .btn-spin:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            filter: saturate(0.6);
-        }
+        .btn-spin { background: var(--btn-bg); color: var(--btn-text); padding: 14px 44px; font-size: 1.05rem; }
+        .btn-spin:disabled { opacity: 0.6; cursor: not-allowed; filter: saturate(0.6); }
         .shop-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-            background: var(--shop-bg);
-            border-radius: 18px;
-            padding: 12px;
+            display: flex; flex-direction: column; gap: 8px; width: 100%;
+            background: var(--shop-bg); border-radius: 18px; padding: 12px;
         }
-        .shop-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
+        .shop-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
         .btn-upgrade { background: #c8d4b9; color: #3a4a2e; }
         .btn-boost { background: #e4d5b5; color: #5a4a2e; }
-        .btn-sell { background: #dfd0c8; color: #5a3a3a; }
+        .btn-sell, .btn-disassemble { background: #dfd0c8; color: #5a3a3a; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
         .message-area {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            min-height: 20px;
-            text-align: center;
-            font-weight: 500;
-            transition: color 0.3s;
+            font-size: 0.8rem; color: var(--text-light); min-height: 20px; text-align: center; font-weight: 500;
         }
-        .message-area.rare {
-            color: #b87050;
-            font-weight: 700;
-        }
-
+        .message-area.rare { color: #b87050; font-weight: 700; }
         .collection-panel {
-            background: var(--collect-bg);
-            border-radius: 18px;
-            padding: 10px 8px 8px;
-            width: 100%;
-            max-height: 160px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            background: var(--collect-bg); border-radius: 18px; padding: 10px 8px 8px;
+            width: 100%; max-height: 180px;
         }
         .collection-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-light);
+            display: flex; justify-content: space-between; font-size: 0.65rem;
+            font-weight: 700; text-transform: uppercase; color: var(--text-light);
         }
-        .collection-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            overflow-y: auto;
-            padding: 2px;
-            align-content: flex-start;
+        .view-toggle {
+            cursor: pointer; background: transparent; border: none;
+            font-weight: 600; color: var(--text-light); text-decoration: underline;
         }
+        .collection-grid { display: flex; flex-wrap: wrap; gap: 2px; overflow-y: auto; padding: 2px; }
         .mini-metal {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            background: #d4cec4;
-            transition: background 0.3s, box-shadow 0.3s;
-            flex-shrink: 0;
+            width: 12px; height: 12px; border-radius: 2px;
+            background: #d4cec4; transition: background 0.3s;
         }
-        .mini-metal.collected {
-            box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        .mini-metal.collected { box-shadow: 0 0 4px rgba(0,0,0,0.2); }
+        .compact-list {
+            overflow-y: auto; max-height: 160px; font-size: 0.7rem; line-height: 1.4;
+            columns: 2; column-gap: 8px;
+        }
+        .compact-entry { display: flex; align-items: center; gap: 4px; margin-bottom: 3px; }
+        .compact-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .save-indicator { font-size: 0.6rem; color: var(--text-light); opacity: 0.7; }
+
+        /* Tutorial overlay */
+        .tutorial-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--tutorial-bg); border-radius: 28px;
+            display: flex; align-items: center; justify-content: center; z-index: 50;
+            padding: 20px; flex-direction: column; gap: 16px; text-align: center;
+            backdrop-filter: blur(4px);
+        }
+        .tutorial-overlay p { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
+        .tutorial-overlay button {
+            background: var(--btn-bg); color: var(--btn-text); padding: 10px 30px;
+            font-size: 1rem; font-weight: 700; border: none; border-radius: 50px; cursor: pointer;
         }
 
-        .rare-sparkle {
-            position: absolute;
-            pointer-events: none;
-            width: 6px;
-            height: 6px;
-            background: #f9e4a0;
-            border-radius: 50%;
-            animation: sparkleFly 0.9s ease-out forwards;
-            z-index: 10;
+        /* Debug Panel */
+        .debug-toggle { position: absolute; top: 10px; right: 10px; background: transparent; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.4; transition: opacity 0.2s; z-index: 10; }
+        .debug-toggle:hover { opacity: 0.9; }
+        .debug-panel {
+            display: none; position: absolute; top: 40px; right: 10px;
+            background: var(--debug-bg); border: 2px solid var(--debug-border); border-radius: 16px;
+            padding: 15px; width: 260px; z-index: 60; box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            flex-direction: column; gap: 8px; font-size: 0.75rem; backdrop-filter: blur(4px);
         }
-        @keyframes sparkleFly {
-            0%{ transform: translate(0,0) scale(1); opacity:1; }
-            100%{ transform: translate(var(--sx), var(--sy)) scale(0); opacity:0; }
-        }
+        .debug-panel.visible { display: flex; }
+        .debug-panel h3 { font-size: 0.85rem; color: var(--text); margin-bottom: 4px; }
+        .debug-row { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+        .debug-input { width: 70px; padding: 4px 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.7rem; background: white; }
+        .btn-debug { background: #e0d0c0; color: #4a3a2a; padding: 4px 10px; font-size: 0.65rem; border-radius: 10px; border: none; cursor: pointer; }
+        .btn-debug:hover { background: #d0bcac; }
+        .debug-password-area { display: flex; flex-direction: column; gap: 6px; }
+        .debug-password-input { width: 100%; padding: 6px 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.7rem; background: white; }
     </style>
 </head>
 <body>
 <div class="game-container" id="gameContainer">
-    <div class="header">
-        <h1>⚒️ Metal Reels</h1>
-        <p class="subtitle">Match to collect · Sell & Upgrade</p>
+    <button class="debug-toggle" id="debugToggle" title="Debug Menu (Ctrl+Shift+D)">⚙️</button>
+    <div class="debug-panel" id="debugPanel">
+        <div id="debugLockedArea">
+            <h3>🔐 Enter Developer Password</h3>
+            <div class="debug-password-area">
+                <input type="password" class="debug-password-input" id="debugPasswordField" placeholder="Password">
+                <button class="btn-debug" id="btnDebugUnlock" style="align-self:flex-end;">Unlock</button>
+            </div>
+        </div>
+        <div id="debugToolsArea" style="display:none;">
+            <h3>🛠️ Developer Tools</h3>
+            <div class="debug-row"><span>Add Points</span><input type="number" class="debug-input" id="debugAddScore" value="1000" min="1"><button class="btn-debug" id="btnDebugAddScore">+</button></div>
+            <div class="debug-row"><span>Add Scrap</span><input type="number" class="debug-input" id="debugAddScrap" value="10" min="1"><button class="btn-debug" id="btnDebugAddScrap">+</button></div>
+            <div class="debug-row"><span>Set Luck Level</span><input type="number" class="debug-input" id="debugSetLuck" value="5" min="0" max="30"><button class="btn-debug" id="btnDebugSetLuck">Set</button></div>
+            <div class="debug-row"><span>Add Boost Spins</span><button class="btn-debug" id="btnDebugBoost">+5 Spins</button></div>
+            <div class="debug-row"><button class="btn-debug" id="btnDebugCompleteCollection">Complete Collection</button></div>
+            <div class="debug-row"><button class="btn-debug" id="btnDebugForceMatch">Force Easy Match</button></div>
+            <div class="debug-row"><button class="btn-debug" id="btnDebugReset">Reset Progress</button></div>
+            <div class="debug-row"><button class="btn-debug" id="btnDebugHide">Close</button></div>
+        </div>
     </div>
 
+    <div class="header"><h1>⚒️ Metal Reels</h1><p class="subtitle">Newbie friendly · Collect & Upgrade</p></div>
     <div class="resource-bar">
         <div class="resource-item">🪙 <span id="scoreValue">0</span> pts</div>
         <div class="resource-item">🔩 <span id="scrapValue">0</span> scrap</div>
-        <div class="resource-item">✨ Lv.<span id="luckLevel">0</span></div>
+        <div class="resource-item">✨ Lv.<span id="luckLevel">0</span> <span id="maxLuckIndicator"></span></div>
         <span class="multiplier-badge" id="multiplierBadge">×1</span>
     </div>
-
-    <div class="grid-wrapper" id="gridWrapper">
-        <div class="grid" id="grid"></div>
-    </div>
-
-    <div class="message-area" id="messageArea">Spin & match to collect!</div>
-
+    <div class="grid-wrapper" id="gridWrapper"><div class="grid" id="grid"></div></div>
+    <div class="message-area" id="messageArea">Spin to start collecting!</div>
     <button class="btn btn-spin" id="btnSpin">⟳ Spin</button>
-
     <div class="shop-section">
-        <div class="shop-row">
-            <span>🔧 Permanent Luck Upgrade</span>
-            <button class="btn btn-upgrade" id="btnUpgrade" disabled>Upgrade (<span id="upgradeCost">10</span> scrap)</button>
-        </div>
-        <div class="shop-row">
-            <span>⚡ Rare Boost (5 spins)</span>
-            <button class="btn btn-boost" id="btnBoost" disabled>Buy (5 scrap)</button>
-            <span id="boostRemaining">0 spins left</span>
-        </div>
-        <div class="shop-row">
-            <span id="sellPreview">No metals to sell</span>
-            <button class="btn btn-sell" id="btnSell" disabled>Sell (+<span id="sellValue">0</span>)</button>
-        </div>
+        <div class="shop-row"><span>🔧 Luck Upgrade</span><button class="btn btn-upgrade" id="btnUpgrade" disabled>Upgrade (<span id="upgradeCost">1</span> scrap)</button></div>
+        <div class="shop-row"><span>⚡ Rare Boost (5 spins)</span><button class="btn btn-boost" id="btnBoost" disabled>Buy (5 scrap)</button><span id="boostRemaining">0</span></div>
+        <div class="shop-row"><span id="sellPreview">No metals</span><button class="btn btn-sell" id="btnSell" disabled>Sell (+<span id="sellValue">0</span>)</button></div>
+        <div class="shop-row"><span id="disassemblePreview">No metals</span><button class="btn btn-disassemble" id="btnDisassemble" disabled>Disassemble (+<span id="disassembleValue">0</span>)</button></div>
     </div>
-
     <div class="collection-panel">
-        <div class="collection-header">
-            <span>🔬 Collection</span>
-            <span id="collectionCount">0 / 1000</span>
-        </div>
-        <div class="collection-grid" id="collectionGrid"></div>
+        <div class="collection-header"><span>🔬 Collection <span id="collectionCount">0/1000</span></span><button class="view-toggle" id="viewToggle">View: Compact</button></div>
+        <div id="collectionContainer"></div>
     </div>
+    <div class="save-indicator" id="saveIndicator"></div>
 </div>
 
 <script>
@@ -342,130 +249,113 @@
         const PREFIXES = ['Astral','Void','Solar','Lunar','Crystal','Shadow','Thunder','Frost','Inferno','Plasma','Quantum','Mystic','Elder','Primal','Eternal','Celestial','Arcane','Photon','Nova','Galactic','Draconic','Spectral','Tempest','Zephyr','Abyssal','Radiant','Obsidian','Sapphire','Emerald','Ruby','Topaz','Amethyst','Diamond','Pearl','Onyx','Jade','Opal','Garnet','Citrine','Aquamarine'];
         const SUFFIXES = ['Iron','Steel','Alloy','Crystal','Ore','Shard','Ingot','Fragment','Essence','Core','Matrix','Fiber','Filament','Plate','Leaf','Dust','Element','Compound','Composite','Substance'];
 
-        function randomPastel() {
-            return `hsl(${Math.floor(Math.random()*360)}, ${55+Math.floor(Math.random()*25)}%, ${72+Math.floor(Math.random()*12)}%)`;
-        }
-        function darkerPastel(hsl) {
-            const parts = hsl.match(/[\d.]+/g);
-            if (!parts) return '#aaa';
-            return `hsl(${parts[0]}, ${parts[1]}%, ${Math.max(parseFloat(parts[2])-15, 45)}%)`;
-        }
+        function randomPastel() { return `hsl(${Math.floor(Math.random()*360)}, ${55+Math.floor(Math.random()*25)}%, ${72+Math.floor(Math.random()*12)}%)`; }
+        function darkerPastel(hsl) { const parts = hsl.match(/[\d.]+/g); if(!parts) return '#aaa'; return `hsl(${parts[0]}, ${parts[1]}%, ${Math.max(parseFloat(parts[2])-15,45)}%)`; }
 
         const metals = [];
         for (let i = 0; i < 1000; i++) {
             const name = `${PREFIXES[Math.floor(Math.random()*PREFIXES.length)]} ${SUFFIXES[Math.floor(Math.random()*SUFFIXES.length)]}`;
             const color = randomPastel();
-            // Boost weights for indices 0-149 to make them more common
             let baseWeight;
-            if (i < 150) {
-                baseWeight = Math.floor(Math.random() * 21) + 30; // 30-50 weight range (much higher)
-            } else {
-                baseWeight = Math.floor(Math.random() * 45) + 5; // 5-50 as before
-            }
+            if (i < 150) baseWeight = 100;
+            else baseWeight = Math.floor(Math.random() * 16) + 5;
             let mult;
-            if (baseWeight <= 10) mult = Math.floor(Math.random() * 16) + 15;
-            else if (baseWeight <= 17) mult = Math.floor(Math.random() * 10) + 11;
-            else if (baseWeight <= 28) mult = Math.floor(Math.random() * 7) + 6;
+            if (baseWeight <= 8) mult = Math.floor(Math.random() * 16) + 15;
+            else if (baseWeight <= 14) mult = Math.floor(Math.random() * 10) + 11;
+            else if (baseWeight <= 22) mult = Math.floor(Math.random() * 7) + 6;
             else mult = Math.floor(Math.random() * 4) + 2;
-            const rarity = baseWeight <= 10 ? 'Legendary' : (baseWeight <= 17 ? 'Very Rare' : (baseWeight <= 28 ? 'Rare' : (baseWeight <= 45 ? 'Uncommon' : 'Common')));
+            const rarity = baseWeight <= 8 ? 'Legendary' : (baseWeight <= 14 ? 'Very Rare' : (baseWeight <= 22 ? 'Rare' : (baseWeight <= 60 ? 'Uncommon' : 'Common')));
             metals.push({
                 id: `metal_${i}`,
-                name,
-                color,
-                colorMid: darkerPastel(color),
+                name, color, colorMid: darkerPastel(color),
                 shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
-                multiplier: mult,
-                weight: baseWeight,
-                rarity,
-                desc: `${rarity} ${name}`
+                multiplier: mult, weight: baseWeight, rarity, desc: `${rarity} ${name}`
             });
         }
 
-        // Base weighted pool (used for normal spins, before upgrades)
-        const baseWeightedPool = [];
-        metals.forEach((m, idx) => {
-            for (let i = 0; i < m.weight; i++) baseWeightedPool.push(idx);
-        });
+        function getScrapValue(metal) { return { Common:1, Uncommon:3, Rare:5, 'Very Rare':10, Legendary:20 }[metal.rarity] || 1; }
 
-        function getScrapValue(metal) {
-            const map = { Common: 1, Uncommon: 3, Rare: 5, 'Very Rare': 10, Legendary: 20 };
-            return map[metal.rarity] || 1;
-        }
-
-        // ──────── DOM REFERENCES ────────
+        // ──────── DOM REFS ────────
         const grid = document.getElementById('grid');
         const btnSpin = document.getElementById('btnSpin');
         const scoreEl = document.getElementById('scoreValue');
         const scrapEl = document.getElementById('scrapValue');
         const luckEl = document.getElementById('luckLevel');
+        const maxLuckIndicator = document.getElementById('maxLuckIndicator');
         const badgeEl = document.getElementById('multiplierBadge');
         const msgEl = document.getElementById('messageArea');
-        const collectionGridEl = document.getElementById('collectionGrid');
+        const collectionContainer = document.getElementById('collectionContainer');
         const collectionCountEl = document.getElementById('collectionCount');
         const sellPreviewEl = document.getElementById('sellPreview');
         const sellValueEl = document.getElementById('sellValue');
         const btnSell = document.getElementById('btnSell');
+        const disassemblePreviewEl = document.getElementById('disassemblePreview');
+        const disassembleValueEl = document.getElementById('disassembleValue');
+        const btnDisassemble = document.getElementById('btnDisassemble');
         const btnUpgrade = document.getElementById('btnUpgrade');
         const upgradeCostEl = document.getElementById('upgradeCost');
         const btnBoost = document.getElementById('btnBoost');
         const boostRemainingEl = document.getElementById('boostRemaining');
+        const viewToggle = document.getElementById('viewToggle');
+        const saveIndicator = document.getElementById('saveIndicator');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugToggle = document.getElementById('debugToggle');
+        const debugLockedArea = document.getElementById('debugLockedArea');
+        const debugToolsArea = document.getElementById('debugToolsArea');
+        const debugPasswordField = document.getElementById('debugPasswordField');
+        const btnDebugUnlock = document.getElementById('btnDebugUnlock');
 
         // ──────── STATE ────────
-        let score = 0;
-        let scrap = 0;
-        let luckLevel = 0;
-        let boostRemaining = 0;
+        let score = 0, scrap = 0, luckLevel = 0, boostRemaining = 0;
+        const MAX_LUCK_LEVEL = 30;
         let collectedMetals = new Set();
-        let nextSellMetal = null;
-        let isSpinning = false;
-        let spinTimeouts = [];
+        let isSpinning = false, compactView = true, nextSellMetal = null, nextDisassembleMetal = null;
+        let debugUnlocked = false;
+        let firstSpin = true; // for guaranteed first win
+        let tutorialShown = false;
 
-        // ──────── INIT GRID & COLLECTION ────────
+        // ──────── CACHED WEIGHTED POOL ────────
+        let currentWeightedPool = [];
+
+        function rebuildWeightedPool() {
+            const pool = [];
+            metals.forEach((m, idx) => {
+                let w = m.weight;
+                if (luckLevel > 0) {
+                    if (m.multiplier >= 12) {
+                        w = Math.floor(w * (1 + luckLevel * 0.4));
+                    } else if (m.rarity === 'Common' || m.rarity === 'Uncommon') {
+                        w = Math.floor(w / (1 + luckLevel * 0.15));
+                    }
+                }
+                if (boostRemaining > 0) {
+                    if (m.multiplier >= 12) {
+                        w = Math.floor(w * 2.5);
+                    } else if (m.rarity === 'Common') {
+                        w = Math.floor(w * 0.5);
+                    }
+                }
+                if (w < 1) w = 1;
+                for (let i = 0; i < w; i++) pool.push(idx);
+            });
+            currentWeightedPool = pool;
+        }
+
+        function randomMetal() {
+            if (currentWeightedPool.length === 0) rebuildWeightedPool();
+            return currentWeightedPool[Math.floor(Math.random() * currentWeightedPool.length)];
+        }
+
+        // ──────── INIT ────────
         function createCells() {
             grid.innerHTML = '';
             for (let i = 0; i < 9; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.dataset.cellIndex = i;
-                const shape = document.createElement('div');
-                shape.className = 'shape-inner';
-                cell.appendChild(shape);
-                grid.appendChild(cell);
+                const cell = document.createElement('div'); cell.className = 'cell'; cell.dataset.cellIndex = i;
+                const shape = document.createElement('div'); shape.className = 'shape-inner';
+                cell.appendChild(shape); grid.appendChild(cell);
             }
         }
 
-        function buildCollectionGrid() {
-            collectionGridEl.innerHTML = '';
-            const frag = document.createDocumentFragment();
-            metals.forEach(m => {
-                const mini = document.createElement('div');
-                mini.className = 'mini-metal';
-                mini.dataset.metalId = m.id;
-                mini.title = `${m.name} (${m.rarity}, ×${m.multiplier})`;
-                mini.style.backgroundColor = '#d4cec4';
-                frag.appendChild(mini);
-            });
-            collectionGridEl.appendChild(frag);
-        }
-
-        function updateCollectionMini(mid) {
-            const mini = collectionGridEl.querySelector(`.mini-metal[data-metal-id="${mid}"]`);
-            if (!mini) return;
-            const metal = metals.find(m => m.id === mid);
-            if (collectedMetals.has(mid)) {
-                mini.classList.add('collected');
-                mini.style.backgroundColor = metal.colorMid;
-            } else {
-                mini.classList.remove('collected');
-                mini.style.backgroundColor = '#d4cec4';
-            }
-        }
-
-        function refreshCollectionCount() {
-            collectionCountEl.textContent = `${collectedMetals.size} / ${metals.length}`;
-        }
-
-        // ──────── RENDERING ────────
         function setCellMetal(idx, metalIdx) {
             const cell = grid.querySelector(`[data-cell-index="${idx}"]`);
             if (!cell) return;
@@ -477,126 +367,130 @@
             cell.dataset.metalIndex = metalIdx;
         }
 
-        function getCurrentWeightedPool() {
-            const pool = [];
-            metals.forEach((m, idx) => {
-                let w = m.weight;
-                if (m.multiplier >= 12 && luckLevel > 0) {
-                    w = Math.floor(w * (1 + luckLevel * 0.15));
-                }
-                if (boostRemaining > 0 && m.multiplier >= 12) {
-                    w = Math.floor(w * 3.5);
-                }
-                for (let i = 0; i < w; i++) pool.push(idx);
+        function renderCollection() {
+            if (compactView) renderCompactCollection();
+            else renderGridCollection();
+            collectionCountEl.textContent = `${collectedMetals.size} / ${metals.length}`;
+        }
+        function renderGridCollection() {
+            collectionContainer.innerHTML = '';
+            const frag = document.createDocumentFragment(); const gridDiv = document.createElement('div'); gridDiv.className = 'collection-grid';
+            metals.forEach(m => {
+                const mini = document.createElement('div'); mini.className = 'mini-metal'; mini.dataset.metalId = m.id;
+                mini.title = `${m.name} (${m.rarity}, ×${m.multiplier})`;
+                mini.style.backgroundColor = collectedMetals.has(m.id) ? m.colorMid : '#d4cec4';
+                if(collectedMetals.has(m.id)) mini.classList.add('collected');
+                gridDiv.appendChild(mini);
             });
-            return pool;
+            frag.appendChild(gridDiv); collectionContainer.appendChild(frag);
+        }
+        function renderCompactCollection() {
+            collectionContainer.innerHTML = '';
+            if (collectedMetals.size === 0) { collectionContainer.innerHTML = '<div style="padding:8px;color:var(--text-light);font-size:0.7rem;">No metals collected yet.</div>'; return; }
+            const compactDiv = document.createElement('div'); compactDiv.className = 'compact-list';
+            const sorted = [...collectedMetals].map(id => metals.find(m => m.id === id)).filter(Boolean)
+                .sort((a,b) => getScrapValue(b) - getScrapValue(a) || a.name.localeCompare(b.name));
+            sorted.forEach(metal => {
+                const entry = document.createElement('div'); entry.className = 'compact-entry';
+                const dot = document.createElement('div'); dot.className = 'compact-dot'; dot.style.backgroundColor = metal.colorMid;
+                entry.appendChild(dot); entry.appendChild(document.createTextNode(`${metal.name} (${metal.rarity})`));
+                compactDiv.appendChild(entry);
+            });
+            collectionContainer.appendChild(compactDiv);
         }
 
-        function randomMetal() {
-            const pool = getCurrentWeightedPool();
-            return pool[Math.floor(Math.random() * pool.length)];
+        function updateCollectionMetal(mid) {
+            if(compactView) renderCompactCollection();
+            else {
+                const mini = collectionContainer.querySelector(`.mini-metal[data-metal-id="${mid}"]`);
+                if(!mini) return;
+                if(collectedMetals.has(mid)) { mini.classList.add('collected'); mini.style.backgroundColor = metals.find(m=>m.id===mid).colorMid; }
+                else { mini.classList.remove('collected'); mini.style.backgroundColor = '#d4cec4'; }
+            }
+            collectionCountEl.textContent = `${collectedMetals.size} / ${metals.length}`;
         }
 
-        function randomUniform() {
-            return Math.floor(Math.random() * metals.length);
-        }
-
-        // ──────── WIN DETECTION ────────
         function getWinLines(g) {
             const lines = [];
-            for (let r = 0; r < 3; r++) {
-                const a = g[r*3], b = g[r*3+1], c = g[r*3+2];
-                if (a === b && b === c) lines.push({ cells: [r*3, r*3+1, r*3+2], idx: a });
-            }
-            for (let c = 0; c < 3; c++) {
-                const a = g[c], b = g[c+3], d = g[c+6];
-                if (a === b && b === d) lines.push({ cells: [c, c+3, c+6], idx: a });
-            }
-            if (g[0] === g[4] && g[4] === g[8]) lines.push({ cells: [0,4,8], idx: g[0] });
-            if (g[2] === g[4] && g[4] === g[6]) lines.push({ cells: [2,4,6], idx: g[2] });
+            for(let r=0;r<3;r++){ const a=g[r*3],b=g[r*3+1],c=g[r*3+2]; if(a===b&&b===c) lines.push({cells:[r*3,r*3+1,r*3+2], idx:a}); }
+            for(let c=0;c<3;c++){ const a=g[c],b=g[c+3],d=g[c+6]; if(a===b&&b===d) lines.push({cells:[c,c+3,c+6], idx:a}); }
+            if(g[0]===g[4]&&g[4]===g[8]) lines.push({cells:[0,4,8], idx:g[0]});
+            if(g[2]===g[4]&&g[4]===g[6]) lines.push({cells:[2,4,6], idx:g[2]});
             return lines;
         }
 
-        function spawnSparkles(cellEl, count = 8) {
-            const rect = cellEl.getBoundingClientRect();
-            const cx = rect.left + rect.width/2;
-            const cy = rect.top + rect.height/2;
-            for (let i = 0; i < count; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'rare-sparkle';
-                const angle = Math.random() * Math.PI * 2;
-                const dist = 25 + Math.random() * 50;
-                sparkle.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
-                sparkle.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
-                sparkle.style.left = cx + 'px';
-                sparkle.style.top = cy + 'px';
-                sparkle.style.position = 'fixed';
-                sparkle.style.width = (4 + Math.random() * 7) + 'px';
-                sparkle.style.height = sparkle.style.width;
-                sparkle.style.background = Math.random() < 0.5 ? '#f9e4a0' : '#f7d98c';
-                document.body.appendChild(sparkle);
-                sparkle.addEventListener('animationend', () => sparkle.remove());
+        function findAlmostMatches(gridIndices) {
+            const hints = new Set();
+            const linesToCheck = [
+                [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]
+            ];
+            for (const [a,b,c] of linesToCheck) {
+                if (gridIndices[a] === gridIndices[b] && gridIndices[a] !== gridIndices[c]) hints.add(c);
+                if (gridIndices[a] === gridIndices[c] && gridIndices[a] !== gridIndices[b]) hints.add(b);
+                if (gridIndices[b] === gridIndices[c] && gridIndices[b] !== gridIndices[a]) hints.add(a);
             }
+            return [...hints];
         }
 
-        function processWins(gridIndices) {
-            const lines = getWinLines(gridIndices);
-            let totalPts = 0;
-            let bestMult = 1;
-            const newIds = new Set();
+        function showAlmostHints(gridIndices) {
+            const hintCells = findAlmostMatches(gridIndices);
+            hintCells.forEach(idx => {
+                const cell = grid.querySelector(`[data-cell-index="${idx}"]`);
+                if (cell) {
+                    cell.classList.add('almost-hint');
+                    setTimeout(() => cell.classList.remove('almost-hint'), 3000);
+                }
+            });
+        }
 
-            if (lines.length > 0) {
-                lines.forEach(line => {
-                    line.cells.forEach(ci => {
+        function processWins(gridIndices, forced = false) {
+            const lines = getWinLines(gridIndices);
+            let totalPts = 0, bestMult = 1;
+            const newIds = new Set();
+            let duplicateScrap = 0;
+
+            if (lines.length) {
+                lines.forEach(l => {
+                    l.cells.forEach(ci => {
                         const cell = grid.querySelector(`[data-cell-index="${ci}"]`);
                         if (cell) cell.classList.add('winning');
                     });
-                    const metal = metals[line.idx];
-                    totalPts += 100 * metal.multiplier;
-                    if (metal.multiplier > bestMult) bestMult = metal.multiplier;
-                    newIds.add(metal.id);
+                    const m = metals[l.idx];
+                    totalPts += 100 * m.multiplier;
+                    if (m.multiplier > bestMult) bestMult = m.multiplier;
+                    newIds.add(m.id);
                 });
 
                 newIds.forEach(id => {
                     if (!collectedMetals.has(id)) {
                         collectedMetals.add(id);
-                        updateCollectionMini(id);
+                        updateCollectionMetal(id);
+                    } else {
+                        duplicateScrap += 2; // bonus for re-matching
                     }
                 });
-                refreshCollectionCount();
-                refreshSellPreview();
 
                 score += totalPts;
-                updateResources();
+                scrap += duplicateScrap;
+                saveGame(); updateUI();
 
                 badgeEl.textContent = '×' + bestMult;
                 badgeEl.classList.add('active');
                 setTimeout(() => badgeEl.classList.remove('active'), 1800);
 
                 const names = [...newIds].map(id => metals.find(m => m.id === id).name).join(' & ');
-                if (bestMult >= 25) {
-                    msgEl.textContent = `🌟 JACKPOT! ${names} ×${bestMult}!`;
-                    msgEl.classList.add('rare');
-                    document.getElementById('gameContainer').classList.add('jackpot-glow');
-                    setTimeout(() => {
-                        msgEl.classList.remove('rare');
-                        document.getElementById('gameContainer').classList.remove('jackpot-glow');
-                    }, 2200);
-                } else if (bestMult >= 15) {
-                    msgEl.textContent = `✨ Rare! ${names} ×${bestMult}!`;
-                    msgEl.classList.add('rare');
-                    setTimeout(() => msgEl.classList.remove('rare'), 1800);
-                } else {
-                    msgEl.textContent = `🎯 Matched ${names} ×${bestMult}!`;
-                    msgEl.classList.remove('rare');
-                }
+                let msg = '';
+                if (bestMult >= 25) msg = `🌟 JACKPOT! ${names} ×${bestMult}!`;
+                else if (bestMult >= 15) msg = `✨ Rare! ${names} ×${bestMult}!`;
+                else msg = `🎯 Matched ${names} ×${bestMult}!`;
+                if (duplicateScrap > 0) msg += ` +${duplicateScrap} bonus scrap.`;
+                msgEl.textContent = msg;
+                msgEl.classList.toggle('rare', bestMult >= 15);
                 document.getElementById('gridWrapper').classList.add('win-border');
                 setTimeout(() => document.getElementById('gridWrapper').classList.remove('win-border'), 2000);
-
-                // Sparkles for high multipliers
                 if (bestMult >= 15) {
-                    lines.forEach(line => {
-                        line.cells.forEach(ci => {
+                    lines.forEach(l => {
+                        l.cells.forEach(ci => {
                             const cell = grid.querySelector(`[data-cell-index="${ci}"]`);
                             if (cell) spawnSparkles(cell, bestMult >= 25 ? 16 : 10);
                         });
@@ -605,97 +499,159 @@
             } else {
                 msgEl.textContent = 'No match — spin again.';
                 msgEl.classList.remove('rare');
+                if (!forced) showAlmostHints(gridIndices);
             }
 
             if (boostRemaining > 0) {
                 boostRemaining--;
-                boostRemainingEl.textContent = `${boostRemaining} spins left`;
-                if (boostRemaining === 0) {
-                    msgEl.textContent += ' Boost ended.';
-                    btnBoost.disabled = (scrap < 5 || boostRemaining > 0);
-                }
+                rebuildWeightedPool();
+                if (boostRemaining === 0) msgEl.textContent += ' Boost ended.';
+                saveGame(); updateUI();
             }
-
-            setTimeout(() => {
-                document.querySelectorAll('.cell.winning').forEach(c => c.classList.remove('winning'));
-            }, 2200);
+            setTimeout(() => document.querySelectorAll('.cell.winning').forEach(c => c.classList.remove('winning')), 2200);
         }
 
-        // ──────── RESOURCES & UI ────────
-        function updateResources() {
-            scoreEl.textContent = score;
-            scrapEl.textContent = scrap;
-            luckEl.textContent = luckLevel;
-            const cost = 10 + luckLevel * 5;
-            upgradeCostEl.textContent = cost;
-            btnUpgrade.disabled = (scrap < cost);
-            btnBoost.disabled = (scrap < 5 || boostRemaining > 0);
+        function spawnSparkles(cellEl, count=8) {
+            const rect = cellEl.getBoundingClientRect(); const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+            for(let i=0;i<count;i++) {
+                const sparkle = document.createElement('div'); sparkle.className = 'rare-sparkle';
+                const angle = Math.random()*Math.PI*2, dist = 25+Math.random()*50;
+                sparkle.style.setProperty('--sx', Math.cos(angle)*dist+'px'); sparkle.style.setProperty('--sy', Math.sin(angle)*dist+'px');
+                sparkle.style.left = cx+'px'; sparkle.style.top = cy+'px'; sparkle.style.position = 'fixed';
+                sparkle.style.width = (4+Math.random()*7)+'px'; sparkle.style.height = sparkle.style.width;
+                sparkle.style.background = Math.random()<0.5?'#f9e4a0':'#f7d98c';
+                document.body.appendChild(sparkle);
+                sparkle.addEventListener('animationend', ()=>sparkle.remove());
+            }
         }
 
-        function refreshSellPreview() {
-            const collectedArr = [...collectedMetals].map(id => metals.find(m => m.id === id)).filter(Boolean);
-            if (collectedArr.length === 0) {
-                nextSellMetal = null;
-                sellPreviewEl.textContent = 'No metals to sell';
-                btnSell.disabled = true;
-                sellValueEl.textContent = '0';
+        function refreshSellDisassemblePreview() {
+            const arr = [...collectedMetals].map(id => metals.find(m=>m.id===id)).filter(Boolean);
+            if(arr.length === 0) {
+                nextSellMetal = nextDisassembleMetal = null;
+                sellPreviewEl.textContent = 'No metals'; btnSell.disabled = true; sellValueEl.textContent = '0';
+                disassemblePreviewEl.textContent = 'No metals'; btnDisassemble.disabled = true; disassembleValueEl.textContent = '0';
             } else {
-                nextSellMetal = collectedArr[Math.floor(Math.random() * collectedArr.length)];
-                sellPreviewEl.textContent = `Sell ${nextSellMetal.name} (${nextSellMetal.rarity})`;
-                sellValueEl.textContent = getScrapValue(nextSellMetal);
-                btnSell.disabled = false;
+                nextSellMetal = arr[Math.floor(Math.random()*arr.length)];
+                sellPreviewEl.textContent = `Sell ${nextSellMetal.name}`; sellValueEl.textContent = getScrapValue(nextSellMetal); btnSell.disabled = false;
+                nextDisassembleMetal = arr[Math.floor(Math.random()*arr.length)];
+                disassemblePreviewEl.textContent = `Disassemble ${nextDisassembleMetal.name}`; disassembleValueEl.textContent = getScrapValue(nextDisassembleMetal)*2; btnDisassemble.disabled = false;
             }
         }
 
         function sellMetal() {
-            if (!nextSellMetal || !collectedMetals.has(nextSellMetal.id)) return;
-            const val = getScrapValue(nextSellMetal);
-            scrap += val;
-            collectedMetals.delete(nextSellMetal.id);
-            updateCollectionMini(nextSellMetal.id);
-            refreshCollectionCount();
-            updateResources();
+            if(!nextSellMetal || !collectedMetals.has(nextSellMetal.id)) return;
+            const val = getScrapValue(nextSellMetal); scrap += val;
+            updateUI(); saveGame();
             msgEl.textContent = `Sold ${nextSellMetal.name} for +${val} scrap.`;
-            refreshSellPreview();
+            refreshSellDisassemblePreview();
+        }
+        function disassembleMetal() {
+            if(!nextDisassembleMetal || !collectedMetals.has(nextDisassembleMetal.id)) return;
+            const val = getScrapValue(nextDisassembleMetal)*2; scrap += val;
+            collectedMetals.delete(nextDisassembleMetal.id);
+            updateCollectionMetal(nextDisassembleMetal.id);
+            updateUI(); saveGame();
+            msgEl.textContent = `Disassembled ${nextDisassembleMetal.name} for +${val} scrap.`;
+            refreshSellDisassemblePreview();
+        }
+
+        function getUpgradeCost() {
+            if (luckLevel === 0) return 1;
+            return 10 + luckLevel*5 + Math.floor(luckLevel*luckLevel/25)*5;
         }
 
         function buyUpgrade() {
-            const cost = 10 + luckLevel * 5;
+            if (luckLevel >= MAX_LUCK_LEVEL) return;
+            const cost = getUpgradeCost();
             if (scrap < cost) return;
-            scrap -= cost;
-            luckLevel++;
-            updateResources();
+            scrap -= cost; luckLevel++;
+            rebuildWeightedPool(); updateUI(); saveGame();
             msgEl.textContent = `✨ Luck upgraded to Lv.${luckLevel}!`;
         }
 
         function buyBoost() {
             if (scrap < 5 || boostRemaining > 0) return;
-            scrap -= 5;
-            boostRemaining = 5;
-            boostRemainingEl.textContent = `${boostRemaining} spins left`;
-            updateResources();
+            scrap -= 5; boostRemaining = 5;
+            rebuildWeightedPool(); updateUI(); saveGame();
             msgEl.textContent = '⚡ Rare boost active for 5 spins!';
         }
 
-        // ──────── SPIN LOGIC ────────
+        function updateUI() {
+            scoreEl.textContent = score; scrapEl.textContent = scrap; luckEl.textContent = luckLevel;
+            if (luckLevel >= MAX_LUCK_LEVEL) {
+                maxLuckIndicator.textContent = '(MAX)'; btnUpgrade.disabled = true; upgradeCostEl.textContent = '–';
+            } else {
+                maxLuckIndicator.textContent = '';
+                upgradeCostEl.textContent = getUpgradeCost();
+                btnUpgrade.disabled = (scrap < getUpgradeCost());
+            }
+            btnBoost.disabled = (scrap < 5 || boostRemaining > 0);
+            boostRemainingEl.textContent = `${boostRemaining} spins left`;
+            refreshSellDisassemblePreview();
+            collectionCountEl.textContent = `${collectedMetals.size} / ${metals.length}`;
+            saveIndicator.textContent = '🔄 Auto-saved';
+            setTimeout(() => { if(saveIndicator) saveIndicator.textContent = ''; }, 1500);
+        }
+
+        function saveGame() {
+            const state = { score, scrap, luckLevel, boostRemaining, collected: [...collectedMetals], firstSpin };
+            localStorage.setItem('metalReelsSave', JSON.stringify(state));
+        }
+        function loadGame() {
+            const saved = localStorage.getItem('metalReelsSave');
+            if (!saved) return false;
+            try {
+                const st = JSON.parse(saved);
+                score = st.score || 0; scrap = st.scrap || 0;
+                luckLevel = Math.min(st.luckLevel || 0, MAX_LUCK_LEVEL);
+                boostRemaining = st.boostRemaining || 0;
+                collectedMetals = new Set(st.collected || []);
+                if (st.firstSpin !== undefined) firstSpin = st.firstSpin;
+                return true;
+            } catch(e) { return false; }
+        }
+        function resetProgress() {
+            if (confirm('Reset all progress?')) { localStorage.removeItem('metalReelsSave'); location.reload(); }
+        }
+
+        // ──────── SPIN WITH FIRST WIN GUARANTEE & RARE FLASH ────────
+        function randomUniform() { return Math.floor(Math.random() * metals.length); }
+
+        function flashRareInSpin(metalIdx, cell) {
+            const metal = metals[metalIdx];
+            if (metal && metal.multiplier >= 12) {
+                cell.classList.add('rare-flash');
+                setTimeout(() => cell.classList.remove('rare-flash'), 200);
+            }
+        }
+
         function spin() {
             if (isSpinning) return;
-            isSpinning = true;
-            btnSpin.disabled = true;
-            btnSpin.textContent = '⟳ Spinning...';
-            msgEl.textContent = '';
+            isSpinning = true; btnSpin.disabled = true; btnSpin.textContent = '⟳ Spinning...'; msgEl.textContent = '';
+            const cells = grid.querySelectorAll('.cell'); cells.forEach(c => c.classList.add('spinning'));
 
-            const cells = grid.querySelectorAll('.cell');
-            cells.forEach(c => c.classList.add('spinning'));
+            let finalGrid;
+            if (firstSpin) {
+                const starterMetalIndex = 0; // guaranteed easy match
+                finalGrid = new Array(9).fill(starterMetalIndex);
+                firstSpin = false;
+            } else {
+                finalGrid = Array.from({ length: 9 }, () => randomMetal());
+            }
 
-            const finalGrid = Array.from({length: 9}, () => randomMetal());
             const startTime = performance.now();
             let timeouts = [];
 
             function cycle() {
-                if (performance.now() - startTime >= 2000) return;
-                for (let i = 0; i < 9; i++) setCellMetal(i, randomUniform());
                 const elapsed = performance.now() - startTime;
+                if (elapsed >= 2000) return;
+                for (let i = 0; i < 9; i++) {
+                    const metalIdx = randomUniform();
+                    setCellMetal(i, metalIdx);
+                    const cell = grid.querySelector(`[data-cell-index="${i}"]`);
+                    if (cell) flashRareInSpin(metalIdx, cell);
+                }
                 const next = elapsed < 900 ? 55 : (elapsed < 1400 ? 90 : (elapsed < 1750 ? 150 : 220));
                 timeouts.push(setTimeout(cycle, next));
             }
@@ -705,53 +661,109 @@
                 timeouts.forEach(clearTimeout);
                 cells.forEach(c => c.classList.remove('spinning'));
                 finalGrid.forEach((mi, i) => setCellMetal(i, mi));
-                cells.forEach((c, i) => {
-                    setTimeout(() => {
-                        c.classList.add('landing');
-                        setTimeout(() => c.classList.remove('landing'), 350);
-                    }, i * 30);
-                });
+                cells.forEach((c, i) => { setTimeout(() => { c.classList.add('landing'); setTimeout(() => c.classList.remove('landing'), 350); }, i*30); });
                 setTimeout(() => processWins(finalGrid), 400);
-                setTimeout(() => {
-                    isSpinning = false;
-                    btnSpin.disabled = false;
-                    btnSpin.textContent = '⟳ Spin';
-                }, 500);
+                setTimeout(() => { isSpinning = false; btnSpin.disabled = false; btnSpin.textContent = '⟳ Spin'; }, 500);
             }, 2000));
-
-            spinTimeouts = timeouts;
         }
+
+        // ──────── TUTORIAL ────────
+        function showTutorial() {
+            if (tutorialShown || localStorage.getItem('tutorialSeen')) return;
+            const overlay = document.createElement('div');
+            overlay.className = 'tutorial-overlay';
+            overlay.innerHTML = `<p>🔬 <b>Match 3 metals</b> in a row to collect them.<br>🔩 <b>Sell or disassemble</b> to earn scrap.<br>✨ Spend scrap on <b>Luck Upgrade</b> to find rarer metals.</p><button>Got it!</button>`;
+            document.getElementById('gameContainer').appendChild(overlay);
+            overlay.querySelector('button').addEventListener('click', () => {
+                overlay.remove();
+                tutorialShown = true;
+                localStorage.setItem('tutorialSeen', '1');
+            });
+        }
+
+        // ──────── WARM START ────────
+        function applyWarmStart() {
+            if (collectedMetals.size > 0) return; // already played
+            // Add 5 random starter metals
+            const starterIndices = [...Array(150).keys()].sort(() => Math.random() - 0.5).slice(0, 5);
+            starterIndices.forEach(idx => collectedMetals.add(metals[idx].id));
+            scrap = 50;
+            score = 100;
+            saveGame();
+            renderCollection();
+            updateUI();
+        }
+
+        // ──────── DEBUG PANEL ────────
+        const DEBUG_PASSWORD = "Metalisthebest";
+        function toggleDebugPanel() {
+            debugPanel.classList.toggle('visible');
+            if (debugPanel.classList.contains('visible')) {
+                if (debugUnlocked) { debugLockedArea.style.display='none'; debugToolsArea.style.display='block'; }
+                else { debugLockedArea.style.display='block'; debugToolsArea.style.display='none'; debugPasswordField.value=''; }
+            }
+        }
+        function hideDebugPanel() { debugPanel.classList.remove('visible'); }
+        function attemptUnlock() {
+            if (debugPasswordField.value.trim() === DEBUG_PASSWORD) {
+                debugUnlocked = true; debugLockedArea.style.display='none'; debugToolsArea.style.display='block';
+                msgEl.textContent = '🔓 Developer tools unlocked!';
+            } else { alert('Incorrect password.'); debugPasswordField.value=''; }
+        }
+        function debugAddScore() { const val = parseInt(document.getElementById('debugAddScore').value)||0; if(val>0) score+=val; updateUI(); saveGame(); }
+        function debugAddScrap() { const val = parseInt(document.getElementById('debugAddScrap').value)||0; if(val>0) scrap+=val; updateUI(); saveGame(); }
+        function debugSetLuck() { let val = parseInt(document.getElementById('debugSetLuck').value)||0; val = Math.min(MAX_LUCK_LEVEL, Math.max(0,val)); luckLevel=val; rebuildWeightedPool(); updateUI(); saveGame(); }
+        function debugAddBoost() { boostRemaining+=5; rebuildWeightedPool(); updateUI(); saveGame(); }
+        function debugCompleteCollection() { metals.forEach(m=>collectedMetals.add(m.id)); renderCollection(); updateUI(); saveGame(); msgEl.textContent='🔧 All 1000 metals added!'; }
+        function debugForceMatch() { if(isSpinning) return; const easyMetalIndex=0; const gridArr = new Array(9).fill(easyMetalIndex); gridArr.forEach((mi,i)=>setCellMetal(i,mi)); processWins(gridArr, true); msgEl.textContent='🔧 Forced match (metal_0) applied!'; }
+        function debugReset() { resetProgress(); }
 
         // ──────── EVENT LISTENERS ────────
         btnSpin.addEventListener('click', spin);
         btnUpgrade.addEventListener('click', buyUpgrade);
         btnBoost.addEventListener('click', buyBoost);
         btnSell.addEventListener('click', sellMetal);
-
-        document.addEventListener('keydown', (e) => {
-            if ((e.code === 'Space' || e.code === 'Enter') && !isSpinning) {
-                e.preventDefault();
-                spin();
-                btnSpin.focus();
+        btnDisassemble.addEventListener('click', disassembleMetal);
+        viewToggle.addEventListener('click', ()=>{ compactView=!compactView; viewToggle.textContent=compactView?'View: Grid':'View: Compact'; renderCollection(); });
+        document.addEventListener('keydown', (e)=>{
+            if ((e.code==='Space'||e.code==='Enter') && !isSpinning &&
+                document.activeElement !== document.getElementById('debugAddScore') &&
+                document.activeElement !== document.getElementById('debugAddScrap') &&
+                document.activeElement !== document.getElementById('debugSetLuck') &&
+                document.activeElement !== debugPasswordField) {
+                e.preventDefault(); spin(); btnSpin.focus();
             }
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyD') { e.preventDefault(); toggleDebugPanel(); }
         });
+        document.querySelector('.header h1').addEventListener('contextmenu', (e)=>{ e.preventDefault(); resetProgress(); });
+        debugToggle.addEventListener('click', toggleDebugPanel);
+        btnDebugUnlock.addEventListener('click', attemptUnlock);
+        document.getElementById('btnDebugAddScore').addEventListener('click', debugAddScore);
+        document.getElementById('btnDebugAddScrap').addEventListener('click', debugAddScrap);
+        document.getElementById('btnDebugSetLuck').addEventListener('click', debugSetLuck);
+        document.getElementById('btnDebugBoost').addEventListener('click', debugAddBoost);
+        document.getElementById('btnDebugCompleteCollection').addEventListener('click', debugCompleteCollection);
+        document.getElementById('btnDebugForceMatch').addEventListener('click', debugForceMatch);
+        document.getElementById('btnDebugReset').addEventListener('click', debugReset);
+        document.getElementById('btnDebugHide').addEventListener('click', hideDebugPanel);
 
-        // ──────── INITIALIZATION ────────
+        // ──────── BOOT ────────
         createCells();
-        buildCollectionGrid();
-
-        // Initial grid with some boosted metals
-        const initGrid = [];
-        for (let i = 0; i < 9; i++) {
-            initGrid.push(randomMetal());
+        if (!loadGame()) {
+            score = 0; scrap = 0; luckLevel = 0; boostRemaining = 0;
+            collectedMetals = new Set();
+            firstSpin = true;
+            applyWarmStart(); // new player handout
         }
-        initGrid.forEach((mi, i) => setCellMetal(i, mi));
-
-        // No metals collected at start (they only come from matches)
-        updateResources();
-        refreshSellPreview();
-        boostRemainingEl.textContent = '0 spins left';
-        msgEl.textContent = 'Match 3 to collect, sell for scrap, upgrade!';
+        rebuildWeightedPool();
+        renderCollection();
+        updateUI();
+        for (let i=0;i<9;i++) setCellMetal(i, randomMetal());
+        viewToggle.textContent = compactView ? 'View: Grid' : 'View: Compact';
+        msgEl.textContent = 'Match 3 to collect – your first spin is on us!';
+        saveIndicator.textContent = 'Ctrl+Shift+D for dev tools (password)';
+        setTimeout(()=> saveIndicator.textContent = '', 4000);
+        showTutorial();
     })();
 </script>
 </body>
